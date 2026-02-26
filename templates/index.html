@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="AI-Powered Study Buddy — your personal learning assistant powered by Google Gemini AI">
+    <title>AI Study Buddy — Learn Smarter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <!-- ═══════════════════════════ LOADER ═══════════════════════════ -->
+    <div id="global-loader" class="loader-overlay hidden">
+        <div class="loader-spinner">
+            <div class="spinner-ring"></div>
+            <p class="loader-text">Thinking…</p>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════ HEADER ═══════════════════════════ -->
+    <header class="app-header">
+        <div class="header-inner">
+            <div class="brand">
+                <span class="brand-icon">🎓</span>
+                <h1>Study Buddy <span class="badge">AI</span></h1>
+            </div>
+            <div class="header-actions">
+                <button id="history-btn" class="icon-btn" title="History">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M12 8v4l3 3" />
+                        <circle cx="12" cy="12" r="9" />
+                        <path d="M3.05 11a9 9 0 0 1 .95-4" />
+                    </svg>
+                </button>
+                <button id="theme-toggle" class="icon-btn" title="Toggle Dark Mode">
+                    <svg class="icon-sun" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+                        viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="5" />
+                        <path
+                            d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                    </svg>
+                    <svg class="icon-moon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+                        viewBox="0 0 24 24">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ═══════════════════════════ NAVIGATION ═══════════════════════════ -->
+    <nav class="tab-nav">
+        <div class="tab-nav-inner">
+            <button class="tab-btn active" data-tab="explain">
+                <span class="tab-icon">💡</span> Explainer
+            </button>
+            <button class="tab-btn" data-tab="summarize">
+                <span class="tab-icon">📝</span> Summarizer
+            </button>
+            <button class="tab-btn" data-tab="quiz">
+                <span class="tab-icon">❓</span> Quiz
+            </button>
+            <button class="tab-btn" data-tab="flashcards">
+                <span class="tab-icon">🃏</span> Flashcards
+            </button>
+            <button class="tab-btn" data-tab="chat">
+                <span class="tab-icon">💬</span> Chat
+            </button>
+        </div>
+    </nav>
+
+    <!-- ═══════════════════════════ MAIN ═══════════════════════════ -->
+    <main class="main-content">
+
+        <!-- ──── TAB: CONCEPT EXPLAINER ──── -->
+        <section id="tab-explain" class="tab-panel active">
+            <div class="card">
+                <h2 class="card-title">AI Concept Explainer</h2>
+                <p class="card-subtitle">Enter any topic and get a comprehensive breakdown</p>
+                <div class="input-group">
+                    <input type="text" id="explain-input" placeholder="e.g. Quantum Computing, Photosynthesis…"
+                        autocomplete="off">
+                    <button id="explain-btn" class="btn-primary">Explain</button>
+                </div>
+            </div>
+            <div id="explain-result" class="result-area hidden">
+                <div class="result-grid">
+                    <div class="result-card simple">
+                        <h3>🟢 Simple Explanation</h3>
+                        <div id="explain-simple" class="result-body"></div>
+                    </div>
+                    <div class="result-card detailed">
+                        <h3>🔵 Detailed Explanation</h3>
+                        <div id="explain-detailed" class="result-body"></div>
+                    </div>
+                    <div class="result-card example">
+                        <h3>🟡 Real-Life Example</h3>
+                        <div id="explain-example" class="result-body"></div>
+                    </div>
+                    <div class="result-card steps">
+                        <h3>🟣 Step-by-Step Breakdown</h3>
+                        <ol id="explain-steps" class="result-body"></ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ──── TAB: NOTES SUMMARIZER ──── -->
+        <section id="tab-summarize" class="tab-panel">
+            <div class="card">
+                <h2 class="card-title">Notes Summarizer</h2>
+                <p class="card-subtitle">Paste your notes and get an instant summary</p>
+                <div class="input-group vertical">
+                    <textarea id="summarize-input" rows="6" placeholder="Paste your notes here…"></textarea>
+                    <button id="summarize-btn" class="btn-primary">Summarize</button>
+                </div>
+            </div>
+            <div id="summarize-result" class="result-area hidden">
+                <div class="result-grid">
+                    <div class="result-card summary">
+                        <h3>📌 Short Summary</h3>
+                        <div id="summarize-summary" class="result-body"></div>
+                    </div>
+                    <div class="result-card bullets">
+                        <h3>🔹 Key Bullet Points</h3>
+                        <ul id="summarize-bullets" class="result-body"></ul>
+                    </div>
+                    <div class="result-card takeaways">
+                        <h3>🎯 Key Takeaways</h3>
+                        <ul id="summarize-takeaways" class="result-body"></ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ──── TAB: QUIZ GENERATOR ──── -->
+        <section id="tab-quiz" class="tab-panel">
+            <div class="card">
+                <h2 class="card-title">Quiz Generator</h2>
+                <p class="card-subtitle">Generate MCQs on any topic to test your knowledge</p>
+                <div class="input-group">
+                    <input type="text" id="quiz-input" placeholder="e.g. Machine Learning basics…" autocomplete="off">
+                    <select id="quiz-difficulty">
+                        <option value="Easy">Easy</option>
+                        <option value="Medium" selected>Medium</option>
+                        <option value="Hard">Hard</option>
+                    </select>
+                    <button id="quiz-btn" class="btn-primary">Generate Quiz</button>
+                </div>
+            </div>
+            <div id="quiz-result" class="result-area hidden">
+                <div id="quiz-questions" class="quiz-container"></div>
+                <div class="quiz-actions">
+                    <button id="quiz-submit" class="btn-primary">Check Answers</button>
+                    <button id="quiz-download" class="btn-secondary">📄 Download PDF</button>
+                </div>
+                <div id="quiz-score" class="score-display hidden"></div>
+            </div>
+        </section>
+
+        <!-- ──── TAB: FLASHCARDS ──── -->
+        <section id="tab-flashcards" class="tab-panel">
+            <div class="card">
+                <h2 class="card-title">Flashcard Generator</h2>
+                <p class="card-subtitle">Create flip-able flashcards for quick revision</p>
+                <div class="input-group">
+                    <input type="text" id="flashcard-input" placeholder="e.g. JavaScript ES6 features…"
+                        autocomplete="off">
+                    <button id="flashcard-btn" class="btn-primary">Generate</button>
+                </div>
+            </div>
+            <div id="flashcard-result" class="result-area hidden">
+                <div id="flashcard-grid" class="flashcard-grid"></div>
+            </div>
+        </section>
+
+        <!-- ──── TAB: AI CHAT ──── -->
+        <section id="tab-chat" class="tab-panel">
+            <div class="chat-container">
+                <div id="chat-messages" class="chat-messages">
+                    <div class="chat-welcome">
+                        <span class="welcome-icon">🤖</span>
+                        <h3>Hi, I'm your Study Buddy!</h3>
+                        <p>Ask me anything — concepts, doubts, homework help, or exam prep.</p>
+                    </div>
+                </div>
+                <div class="chat-input-area">
+                    <textarea id="chat-input" rows="1" placeholder="Type your question…"></textarea>
+                    <button id="chat-btn" class="btn-send" title="Send">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <path d="M22 2 11 13" />
+                            <path d="M22 2 15 22 11 13 2 9z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ═══════════════════════════ HISTORY PANEL ═══════════════════════════ -->
+    <aside id="history-panel" class="history-panel hidden">
+        <div class="history-header">
+            <h3>📚 History</h3>
+            <button id="history-close" class="icon-btn">✕</button>
+        </div>
+        <div id="history-list" class="history-list">
+            <p class="history-empty">No history yet. Start learning!</p>
+        </div>
+        <button id="history-clear" class="btn-danger">Clear All History</button>
+    </aside>
+
+    <!-- ═══════════════════════════ TOAST ═══════════════════════════ -->
+    <div id="toast" class="toast hidden"></div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
+</html>
